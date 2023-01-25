@@ -1,5 +1,16 @@
-# Created by https://www.toptal.com/developers/gitignore/api/git,vercel,nextjs,react,yarn,node,tortoisegit,storybookjs,macos,windows,jetbrains+all,visualstudio,visualstudiocode,netbeans,eclipse,dotenv
-# Edit at https://www.toptal.com/developers/gitignore?templates=git,vercel,nextjs,react,yarn,node,tortoisegit,storybookjs,macos,windows,jetbrains+all,visualstudio,visualstudiocode,netbeans,eclipse,dotenv
+# Created by https://www.toptal.com/developers/gitignore/api/git,node,yarn,macos,react,dotenv,nextjs,vercel,eclipse,windows,netbeans,storybookjs,tortoisegit,visualstudio,jetbrains+all,visualstudiocode,database
+# Edit at https://www.toptal.com/developers/gitignore?templates=git,node,yarn,macos,react,dotenv,nextjs,vercel,eclipse,windows,netbeans,storybookjs,tortoisegit,visualstudio,jetbrains+all,visualstudiocode,database
+
+### Database ###
+*.accdb
+*.db
+*.dbf
+*.mdb
+*.pdb
+*.sqlite3
+*.sqlite
+*.db-shm
+*.db-wal
 
 ### dotenv ###
 .env
@@ -552,7 +563,6 @@ StyleCopReport.xml
 *.obj
 *.iobj
 *.pch
-*.pdb
 *.ipdb
 *.pgc
 *.pgd
@@ -859,4 +869,4 @@ FodyWeavers.xsd
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
 
-# End of https://www.toptal.com/developers/gitignore/api/git,vercel,nextjs,react,yarn,node,tortoisegit,storybookjs,macos,windows,jetbrains+all,visualstudio,visualstudiocode,netbeans,eclipse,dotenv
+# End of https://www.toptal.com/developers/gitignore/api/git,node,yarn,macos,react,dotenv,nextjs,vercel,eclipse,windows,netbeans,storybookjs,tortoisegit,visualstudio,jetbrains+all,visualstudiocode,database
