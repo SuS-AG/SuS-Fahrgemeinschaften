@@ -3,6 +3,7 @@ import logo from "../../public/assets/logo.svg";
 import Image from "next/image";
 import { Input } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react";
+import Footer from "../components/footer/footer";
 
 export default function Register() {
   return (
@@ -29,11 +30,17 @@ export default function Register() {
         <Button colorScheme="teal" size="md" className="mx-7 w-[10.625rem]">
           Anmelden
         </Button>
-    
       </div>
-      <div className="container h-[100%] w-[100%] mx-auto text-center justify-center text-xs">
-        <p>Hast Du bereits ein Konto? Melde dich <a href=""className="underline text-blue-500">hier</a> an.</p>
-        </div>
+      <div className="container mx-auto h-[100%] w-[100%] justify-center text-center text-xs">
+        <p>
+          Hast Du bereits ein Konto? Melde dich{" "}
+          <a href="" className="text-blue-500 underline">
+            hier
+          </a>{" "}
+          an.
+        </p>
+      </div>
+      <Footer />
     </div>
   );
 }
