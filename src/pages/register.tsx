@@ -21,11 +21,11 @@ export default function Register() {
         <p className="text-2xl font-extrabold">bei</p>
         <p className="text-2xl font-extrabold">SUS-Fahrgemeinschaften</p>
       </div>
-      <div className="container m-5 mx-auto w-56 justify-center">
+      <div className="container block m-5 mx-auto w-56 justify-center">
         <Input placeholder="E-Mail" className="my-2" />
         <Input placeholder="Passwort" className="my-2" />
         <Input placeholder="Passwort wiederholen" className="my-2" />
-        <Button colorScheme="teal" size="md" > Anmelden</Button>
+        <Button colorScheme="teal" size="md" className="w-[170px] mx-7" > Anmelden</Button>
 
       </div>
 
