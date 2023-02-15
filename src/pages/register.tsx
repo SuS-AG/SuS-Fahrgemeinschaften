@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import logo from "../../public/assets/logo.svg";
 import Image from "next/image";
 import { Input } from "@chakra-ui/react";
@@ -13,7 +14,7 @@ export default function Register() {
         <Image
           src={logo}
           alt=""
-          className="mx-auto my-[79px] h-[128px] w-[128px]"
+          className="mx-auto my-[4.938rem] h-[8rem] w-[8rem]"
         />
       </div>
       <div className="container  justify-center text-center">
@@ -21,14 +22,18 @@ export default function Register() {
         <p className="text-2xl font-extrabold">bei</p>
         <p className="text-2xl font-extrabold">SUS-Fahrgemeinschaften</p>
       </div>
-      <div className="container block m-5 mx-auto w-56 justify-center">
+      <div className="container m-5 mx-auto block w-56 justify-center">
         <Input placeholder="E-Mail" className="my-2" />
         <Input placeholder="Passwort" className="my-2" />
         <Input placeholder="Passwort wiederholen" className="my-2" />
-        <Button colorScheme="teal" size="md" className="w-[170px] mx-7" > Anmelden</Button>
-
+        <Button colorScheme="teal" size="md" className="mx-7 w-[10.625rem]">
+          Anmelden
+        </Button>
+    
       </div>
-
+      <div className="container h-[100%] w-[100%] mx-auto text-center justify-center text-xs">
+        <p>Hast Du bereits ein Konto? Melde dich <a href=""className="underline text-blue-500">hier</a> an.</p>
+        </div>
     </div>
   );
 }
