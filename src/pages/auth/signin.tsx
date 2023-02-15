@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import logo from "../../public/assets/logo.svg";
+import logo from "../../../public/assets/logo.svg";
 import Image from "next/image";
 import { Box, FormControl, Input, Link, Text } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react";
-import Footer from "../components/footer/footer";
+import Footer from "../../components/footer/footer";
 
-export default function Register() {
+export default function Signin() {
   return (
     <Box className=" h-[100%] w-[100%]">
       <Box
@@ -19,9 +19,7 @@ export default function Register() {
         />
       </Box>
       <Box className="justify-center text-center">
-        <Text fontSize="4xl" fontWeight={"extrabold"}> Willkommen</Text>
-        <Text fontSize="2xl" fontWeight={"extrabold"}>bei</Text>
-        <Text fontSize="2xl" fontWeight={"extrabold"}>SUS-Fahrgemeinschaften</Text>
+        <Text className="text-4xl font-extrabold"> Login</Text>
       </Box>
 
       <Box className=" m-5 mx-auto block w-56 justify-center">
@@ -29,29 +27,25 @@ export default function Register() {
           <FormControl>
             <Input type="email" placeholder="E-Mail" className="my-2" />
             <Input type="password" placeholder="Passwort" className="my-2" />
-            <Input
-              type="password"
-              placeholder="Passwort wiederholen"
-              className="my-2"
-            />
+
             <Button
               type="submit"
               colorScheme="teal"
               size="md"
               className="mx-7 w-[10.625rem]"
             >
-              Anmelden
+              Login
             </Button>
           </FormControl>
         </form>
       </Box>
       <Box className=" mx-auto h-[100%] w-[100%] justify-center text-center text-xs">
         <Text>
-          Hast Du bereits ein Konto? Melde dich{" "}
+          Hast Du noch kein Konto? Erstelle {" "}
           <Link color="teal.500" href="#">
             hier{" "}
           </Link>
-          an.
+          eins.
         </Text>
       </Box>
       <Box>
