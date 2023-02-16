@@ -66,6 +66,26 @@ export const profileRouter = createTRPCRouter({
     //             ...profile,
     //         };
     //     }),
+  me: protectedProcedure
+    .query(({ctx}) => {
+      if (ctx.session?.user?.id) {
+        return ctx.prisma.user.findUnique({
+          where: {
+            id: ctx.session.user.id
+          },
+          select: {
+            id: true,
+            email: true,
+            firstname: true,
+            lastname: true,
+            phoneNumber: true,
+          }
+        })
+      }
+
+      return null;
+    }),
+
     getById: protectedProcedure
         .input(
             z.object({
@@ -73,6 +93,8 @@ export const profileRouter = createTRPCRouter({
             })
         )
         .query(async ({ ctx, input }) => {
+          const id = ctx.session.user.id;
+          console.log(id);
             const user = await ctx.prisma.user.findUnique({
                 where: { id: input.id },
                 select: { 

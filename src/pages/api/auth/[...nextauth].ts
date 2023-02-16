@@ -10,10 +10,18 @@ import omit from "../../../utils/omit";
 export const authOptions: NextAuthOptions = {
   callbacks: {
     // FIXME: This doesn't work, the account and user is always null
-    jwt({token, account}) {
-      if (account) token.id = account.userId;
+    session: ({ session, token }) => {
+      if (session?.user) {
+        session.user.id = token.uid as string;
+      }
+      return session;
+    },
+    jwt: ({ user, token }) => {
+      if (user) {
+        token.uid = user.id;
+      }
       return token;
-    }
+    },
   },
   // Configure one or more authentication providers
   adapter: PrismaAdapter(prisma),
@@ -25,11 +33,8 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        if (!credentials) return null;
         const email =  credentials.email;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         const password = credentials.password;
 
         const user = await prisma.user.findUnique({
@@ -40,16 +45,13 @@ export const authOptions: NextAuthOptions = {
             id: true,
             email: true,
             password: true,
-            firstName: true,
-            lastName: true,
+            firstname: true,
+            lastname: true,
             phoneNumber: true,
           }
         });
 
-        console.log(JSON.stringify(user));
-
         if (user && user.password === password) {
-          console.log(password)
           return omit(user, 'password');
         }
         // Return null if user data could not be retrieved
