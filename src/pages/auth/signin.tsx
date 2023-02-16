@@ -7,10 +7,11 @@ import Footer from "../../components/footer/footer";
 
 export default function Signin() {
   return (
-    <Box className=" h-[100%] w-[100%]">
-      <Box
+    <Box className=" h-full w-full grid grid-rows-layout">
+     <Box>
+     <Box
         className=" mx-auto 
-      flex h-[100%] w-[100%]"
+      flex"
       >
         <Image
           src={logo}
@@ -22,7 +23,7 @@ export default function Signin() {
         <Text className="text-4xl font-extrabold"> Login</Text>
       </Box>
 
-      <Box className=" m-5 mx-auto block w-56 justify-center">
+      <Box className=" m-5 mx-auto  w-56 justify-center content-center">
         <form action="">
           <FormControl>
             <Input type="email" placeholder="E-Mail" className="my-2" />
@@ -39,7 +40,7 @@ export default function Signin() {
           </FormControl>
         </form>
       </Box>
-      <Box className=" mx-auto h-[100%] w-[100%] justify-center text-center text-xs">
+      <Box className=" mx-auto justify-center text-center text-xs">
         <Text>
           Hast Du noch kein Konto? Erstelle {" "}
           <Link color="teal.500" href="#">
@@ -48,6 +49,8 @@ export default function Signin() {
           eins.
         </Text>
       </Box>
+     </Box>
+     
       <Box>
         <Footer />
       </Box>
