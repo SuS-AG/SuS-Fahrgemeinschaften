@@ -2,11 +2,12 @@
 import { type NextPage } from "next";
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
-
-import { api } from "../utils/api";
+import React from "react";
+import {api} from "../utils/api";
 
 const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
+  const {isLoading, data} = api.profile.me.useQuery();
 
   return (
     <>
@@ -41,7 +42,8 @@ const Home: NextPage = () => {
           </div>
           <div className="flex flex-col items-center gap-2">
             <p className="text-2xl text-white">
-              {hello.data ? hello.data.greeting : "Loading tRPC query..."}
+              {data && <span>Logged in as {data.firstname}</span>}
+              {data && <span>Logged in as {data.email}</span>}
             </p>
             <AuthShowcase />
           </div>
@@ -56,21 +58,20 @@ export default Home;
 const AuthShowcase: React.FC = () => {
   const { data: sessionData } = useSession();
 
-  const { data: secretMessage } = api.example.getSecretMessage.useQuery(
+  const { data: me } = api.profile.me.useQuery(
     undefined, // no input
     { enabled: sessionData?.user !== undefined },
   );
-  console.log(sessionData)
 
   return (
     <div className="flex flex-col items-center justify-center gap-4">
       <p className="text-center text-2xl text-white">
-        {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-        {secretMessage && <span> - {secretMessage}</span>}
+        {sessionData && <span>Logged in as {sessionData.user?.email}</span>}
+        {me && <span> - <>{me.firstname}</></span>}
       </p>
       <button
         className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-        onClick={sessionData ? () => void signOut() : () => void signIn()}
+        onClick={sessionData ? () => void signOut() : () => void signIn(undefined, {redirect: true})}
       >
         {sessionData ? "Sign out" : "Sign in"}
       </button>

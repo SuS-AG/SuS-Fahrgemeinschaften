@@ -1,6 +1,5 @@
 import { createTRPCRouter } from "./trpc";
 import {registerRouter} from "./routers/register";
-import {userRouter} from "./routers/userRouter";
 import { profileRouter } from "./routers/profile";
 
 /**
@@ -10,7 +9,6 @@ import { profileRouter } from "./routers/profile";
  */
 export const appRouter = createTRPCRouter({
   register: registerRouter,
-  user: userRouter,
   profile: profileRouter,
 });
 
