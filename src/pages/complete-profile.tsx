@@ -1,49 +1,55 @@
-import React, {
-  ChangeEventHandler,
-  MouseEventHandler,
-  useState
-} from "react";
+import React, { ChangeEventHandler, MouseEventHandler, useState } from "react";
 import { Box, Button, FormControl } from "@chakra-ui/react";
 import { Avatar } from "@chakra-ui/react";
 import { Input } from "@chakra-ui/react";
 import { Link } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { Text } from "@chakra-ui/react";
+import { api } from "../utils/api";
+import { useRouter } from "next/router";
+import Footer from "../components/footer/footer";
 
 export default function Profile() {
-  const [vorname, setVorname] = useState("");
-  const [nachname, setNachname] = useState("");
-  const [telefonnummer, setTelefonnummer] = useState("");
+  const completeProfileMutation = api.profile.completeProfile.useMutation();
+  const router = useRouter();
 
-  const changeVorname: ChangeEventHandler<HTMLInputElement> = (event) => {
-    setVorname(event.target.value);
-    console.log(vorname);
+  const [firstname, setFirstname] = useState<string>("");
+  const [lastname, setLastname] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
+
+  const handleFirstnameChange: ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    setFirstname(event.target.value);
   };
 
-  const changeNachname: ChangeEventHandler<HTMLInputElement> = (event) => {
-    setNachname(event.target.value);
-    console.log(nachname);
+  const handleLastnameChange: ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    setLastname(event.target.value);
   };
 
-  const changeTelefonnummer: ChangeEventHandler<HTMLInputElement> = (event) => {
-    setTelefonnummer(event.target.value);
-    console.log(telefonnummer);
+  const handlePhoneNumberChange: ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    setPhoneNumber(event.target.value);
   };
 
-  const safeData: MouseEventHandler<HTMLButtonElement> = () => {
-    console.log("test");
+  const handleSubmit: MouseEventHandler<HTMLButtonElement> = () => {
+    completeProfileMutation.mutate({ firstname, lastname, phoneNumber });
+    router.push("/trips");
   };
 
   return (
-    <Box className="h-[100%] w-[100%] px-4 py-5">
-      <form>
+    <Box className="grid h-full w-full grid-rows-layout">
+      <form className="px-4 py-5">
         <FormControl>
           <Box className="flex justify-end">
             <Button
               colorScheme="teal"
               size="md"
               className="h-[2.5rem] w-[7.188rem]"
-              onClick={safeData}
+              onClick={handleSubmit}
               type="submit"
             >
               Speichern
@@ -71,21 +77,25 @@ export default function Profile() {
             <Input
               placeholder="Vorname"
               className="text-start "
-              onChange={changeVorname}
+              onChange={handleFirstnameChange}
             />
             <Input
               placeholder="Nachname"
               className="text-start"
-              onChange={changeNachname}
+              onChange={handleLastnameChange}
             />
             <Input
               placeholder="Telefonnummer"
               className="text-start"
-              onChange={changeTelefonnummer}
+              onChange={handlePhoneNumberChange}
             />
           </Box>
         </FormControl>
       </form>
+
+      <Box>
+        <Footer />
+      </Box>
     </Box>
   );
 }
