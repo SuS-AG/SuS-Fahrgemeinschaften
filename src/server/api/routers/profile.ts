@@ -12,6 +12,26 @@ const profileInclude = {
 
 export const profileRouter = createTRPCRouter({
 
+  me: protectedProcedure
+    .query(({ctx}) => {
+      if (ctx.session?.user?.id) {
+        return ctx.prisma.user.findUnique({
+          where: {
+            id: ctx.session.user.id
+          },
+          select: {
+            id: true,
+            email: true,
+            firstname: true,
+            lastname: true,
+            phoneNumber: true,
+          }
+        })
+      }
+
+      return null;
+    }),
+
     getById: protectedProcedure
         .input(
             z.object({
@@ -19,6 +39,8 @@ export const profileRouter = createTRPCRouter({
             })
         )
         .query(async ({ ctx, input }) => {
+          const id = ctx.session.user.id;
+          console.log(id);
             const user = await ctx.prisma.user.findUnique({
                 where: { id: input.id },
                 select: { 
@@ -34,15 +56,4 @@ export const profileRouter = createTRPCRouter({
               return user;
 
         }),
-
-        me: publicProcedure
-        .input(z.object({vorname: z.string(), nachname: z.string(), telefonnummer: z.string()}))
-        .mutation(({input, ctx}) => {
-            return ctx.prisma.user.update({
-                where:{
-                    id: 
-                }
-            })
-            
-        })
     });
