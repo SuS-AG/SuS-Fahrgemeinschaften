@@ -1,11 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import logo from "../../../public/assets/logo.svg";
 import Image from "next/image";
 import { Box, FormControl, Input, Link, Text } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react";
 import Footer from "../../components/footer/footer";
-import {ChangeEventHandler, FormEventHandler, MouseEventHandler, useCallback, useState} from "react";
+import type {ChangeEventHandler, FormEventHandler, MouseEventHandler} from "react";
+import { useCallback, useState} from "react";
 import {signIn} from "next-auth/react";
+import NextLink from "next/link";
 
 export default function Signin() {
   const [email, setEmail] = useState<string>();
@@ -29,20 +30,17 @@ export default function Signin() {
     await signIn('credentials', {
       password,
       email,
-      redirect: false,
+      redirect: true,
+      callbackUrl: '/'
     })
-    // TODO: Redirect user
   }, [email, password])
 
   return (
-    <Box className=" h-full w-full grid grid-rows-layout">
+    <Box className="h-full w-full grid grid-rows-layout">
      <Box>
-     <Box
-        className=" mx-auto 
-      flex"
-      >
+     <Box className="mx-auto flex">
         <Image
-          src={logo}
+          src={logo as string}
           alt=""
           className="mx-auto my-[4.938rem] h-[8rem] w-[8rem]"
         />
@@ -85,7 +83,7 @@ export default function Signin() {
       <Box className=" mx-auto justify-center text-center text-xs">
         <Text>
           Hast Du noch kein Konto? Erstelle {" "}
-          <Link color="teal.500" href="#">
+          <Link as={NextLink} color="teal.500" href="/register">
             hier{" "}
           </Link>
           eins.

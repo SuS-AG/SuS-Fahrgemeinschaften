@@ -1,14 +1,11 @@
 "use client";
-import { type NextPage } from "next";
+import {type NextPage} from "next";
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 import React from "react";
 import {api} from "../utils/api";
 
 const Home: NextPage = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
-  const {isLoading, data} = api.profile.me.useQuery();
-
   return (
     <>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
@@ -42,8 +39,6 @@ const Home: NextPage = () => {
           </div>
           <div className="flex flex-col items-center gap-2">
             <p className="text-2xl text-white">
-              {data && <span>Logged in as {data.firstname}</span>}
-              {data && <span>Logged in as {data.email}</span>}
             </p>
             <AuthShowcase />
           </div>
