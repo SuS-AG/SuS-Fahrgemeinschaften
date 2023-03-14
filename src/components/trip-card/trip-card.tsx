@@ -8,12 +8,15 @@ import {
   Box,
   Heading,
   Icon,
+  Link,
   Button,
 } from "@chakra-ui/react";
 import { IoChevronForward } from "react-icons/io5";
 import { IoTimeOutline } from "react-icons/io5";
 import { IoCalendarOutline } from "react-icons/io5";
 import { MdAirlineSeatReclineExtra } from "react-icons/md";
+import NextLink from "next/link";
+
 function TripCard() {
   return (
     <>
@@ -32,7 +35,7 @@ function TripCard() {
                 Arrival place - Arrival Time
               </Text>
             </Box>
-            <Box className="flex justify-around">
+            <Box className="flex justify-between px-16">
               <Text>
                 <Icon as={IoTimeOutline} /> 8:00
               </Text>
@@ -46,7 +49,11 @@ function TripCard() {
               </Text>
             </Box>
             <Box className="flex justify-end">
-              <Button colorScheme="teal"> Anfragen</Button>
+              <Button colorScheme="teal">
+                <Link as={NextLink} href="/trips/id/">
+                  Anfragen
+                </Link>
+              </Button>
             </Box>
           </CardBody>
         </Card>
