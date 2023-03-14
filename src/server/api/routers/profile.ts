@@ -61,27 +61,51 @@ export const profileRouter = createTRPCRouter({
       })
     )
     .mutation(({ input, ctx }) => {
-
-    getById: protectedProcedure
+      getById: protectedProcedure
         .input(
-            z.object({
-                id: z.string(),
-            })
+          z.object({
+            id: z.string(),
+          })
         )
         .query(async ({ ctx, input }) => {
           const id = ctx.session.user.id;
-            const user = await ctx.prisma.user.findUnique({
-                where: { id: input.id },
-                select: { 
-                    id: true,
-                    email: true,
-                    password: true,
-                    firstname: true,
-                    lastname: true,
-                    phoneNumber: true,
-                 }
-              });
-        
-              return user;
-        }),
+          const user = await ctx.prisma.user.findUnique({
+            where: { id: input.id },
+            select: {
+              id: true,
+              email: true,
+              password: true,
+              firstname: true,
+              lastname: true,
+              phoneNumber: true,
+            },
+          });
+
+          return user;
+        });
+    }),
+  editProfile: protectedProcedure
+    .input(
+      z.object({
+        firstname: z.string(),
+        lastname: z.string(),
+        phonenumber: z.string(),
+        email: z.string(),
+      })
+    )
+    .mutation(({ input, ctx }) => {
+      if (ctx.session?.user?.id) {
+        return ctx.prisma.user.update({
+          where: {
+            id: ctx.session.user.id,
+          },
+          data: {
+            firstname: input.firstname,
+            lastname: input.lastname,
+            phoneNumber: input.phonenumber,
+            email: input.email,
+          },
+        });
+      }
+    }),
 });

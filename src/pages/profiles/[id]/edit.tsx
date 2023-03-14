@@ -30,12 +30,14 @@ import {
   ModalBody,
   ModalCloseButton,
 } from "@chakra-ui/react";
+import Footer from "../../../components/footer/footer";
 
 const Edit: NextPage = ({}) => {
-  const [vorname, setVorname] = useState("");
-  const [nachname, setNachname] = useState("");
-  const [telefonnummer, setTelefonnummer] = useState("");
-  const [email, setEmail] = useState("");
+  const [firstname, setFirstname] = useState<string>("");
+  const [lastname, setLastname] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const editProfileMutation = api.profile.editProfile.useMutation();
 
   const router = useRouter();
   const { id } = router.query;
@@ -48,15 +50,13 @@ const Edit: NextPage = ({}) => {
 
   useEffect(() => {
     if (!data || isLoading) return;
-    setVorname(data?.firstname ?? "");
-    setNachname(data?.lastname ?? "");
-    setTelefonnummer(data?.phoneNumber ?? "");
+    setFirstname(data?.firstname ?? "");
+    setLastname(data?.lastname ?? "");
+    setPhoneNumber(data?.phoneNumber ?? "");
     setEmail(data?.email ?? "");
   }, [data, isLoading]);
 
-  useEffect(() => {
-    console.log(vorname);
-  }, [vorname]);
+  useEffect(() => {}, [firstname]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -70,28 +70,24 @@ const Edit: NextPage = ({}) => {
 
   const fullname = (data.firstname as string) + " " + (data.lastname as string);
 
-  const changeVorname: ChangeEventHandler<HTMLInputElement> = (event) => {
-    setVorname(event.target.value);
+  const handleFirstnameChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+    setFirstname(event.target.value);
   };
 
-  const changeNachname: ChangeEventHandler<HTMLInputElement> = (event) => {
-    setNachname(event.target.value);
-    console.log(nachname);
+  const handleLastnameChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+    setLastname(event.target.value);
   };
 
-  const changeTelefonnummer: ChangeEventHandler<HTMLInputElement> = (event) => {
-    setTelefonnummer(event.target.value);
-    console.log(telefonnummer);
+  const handlePhoneNumberChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+    setPhoneNumber(event.target.value);
   };
 
-  const changeEmail: ChangeEventHandler<HTMLInputElement> = (event) => {
+  const handleEmailChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     setEmail(event.target.value);
-    console.log(email);
   };
 
-  const safeData: MouseEventHandler<HTMLButtonElement> = () => {
-    console.log("test");
-  };
+  // const safeData: MouseEventHandler<HTMLButtonElement> = () => {
+  // };
 
   const handleBackClick: MouseEventHandler<HTMLButtonElement> = () => {
     router.back();
@@ -102,9 +98,19 @@ const Edit: NextPage = ({}) => {
     event.preventDefault();
   };
 
+  const handleModalSavebuttonClick: MouseEventHandler<
+    HTMLButtonElement
+  > = () => {
+    editProfileMutation.mutate({
+      firstname, lastname, phonenumber: phoneNumber, email
+    });
+    onClose();
+    router.push({pathname: "/profiles/[id]", query: {id: data.id}} );
+  };
+
   return (
-    <Box className="h-[100%] w-[100%] px-4 py-5">
-      <form onSubmit={handleSubmit}>
+    <Box className="grid h-full w-full grid-rows-layout">
+      <form className="px-4 py-5">
         <FormControl>
           <Box className="flex flex-row items-center justify-between">
             <Button
@@ -120,24 +126,25 @@ const Edit: NextPage = ({}) => {
               className="h-[2.5rem] w-[7.188rem]"
               colorScheme="teal"
               onClick={onOpen}
-              onSubmit={handleSubmit}
             >
               Speichern
             </Button>
           </Box>
 
-          <Modal isOpen={isOpen} onClose={onClose}>
+          <Modal isOpen={isOpen} onClose={onClose} isCentered>
             <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>Modal Title</ModalHeader>
+            <ModalContent maxW="80%">
+              <ModalHeader>Speichern?</ModalHeader>
               <ModalCloseButton />
-              <ModalBody>{/* <Lorem count={2} /> */}</ModalBody>
+              <ModalBody>Sollen die Änderungen übernommen werden?</ModalBody>
 
               <ModalFooter>
-                <Button colorScheme="blue" mr={3} onClick={onClose}>
-                  Close
+                <Button colorScheme="gray" mr={3} onClick={onClose}>
+                  Verwerfen
                 </Button>
-                <Button variant="ghost">Secondary Action</Button>
+                <Button colorScheme="green" onClick={handleModalSavebuttonClick}>
+                  Übernehmen
+                </Button>
               </ModalFooter>
             </ModalContent>
           </Modal>
@@ -157,31 +164,34 @@ const Edit: NextPage = ({}) => {
           <Box className="flex flex-col gap-5 ">
             <Input
               placeholder="Vorname"
-              value={vorname}
+              value={firstname}
               className="text-start "
-              onChange={changeVorname}
+              onChange={handleFirstnameChange}
             />
             <Input
               placeholder="Nachname"
-              value={nachname}
+              value={lastname}
               className="text-start"
-              onChange={changeNachname}
+              onChange={handleLastnameChange}
             />
             <Input
               placeholder="Telefonnummer"
-              value={telefonnummer}
+              value={phoneNumber}
               className="text-start"
-              onChange={changeTelefonnummer}
+              onChange={handlePhoneNumberChange}
             />
             <Input
               placeholder="E-Mail"
               value={email}
               className="text-start "
-              onChange={changeEmail}
+              onChange={handleEmailChange}
             />
           </Box>
         </FormControl>
       </form>
+      <Box>
+        <Footer />
+      </Box>
     </Box>
   );
 };
