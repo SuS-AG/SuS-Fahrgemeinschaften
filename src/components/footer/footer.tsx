@@ -1,15 +1,16 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
+
 
 export default function Footer() {
   return (
     <Box className="grid min-h-[5.813rem] min-w-full bg-cyan-900 text-center content-center">
-      <div>
-        <p className="text-2xl font-bold text-white">SUS</p>
-        <p className="text-xs font-extralight text-white">
+      <Box>
+        <Text className="text-2xl font-bold text-white">SUS</Text>
+        <Text className="text-xs font-extralight text-white">
           Schüler und Schülerinnen
-        </p>
-        <p className="text-xs font-extralight text-white">© SuS AG</p>
-      </div>
+        </Text>
+        <Text className="text-xs font-extralight text-white">© SuS AG</Text>
+      </Box>
     </Box>
   );
 }
