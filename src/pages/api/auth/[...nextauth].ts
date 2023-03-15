@@ -1,7 +1,7 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-// Prisma adapter for NextAuth, optional and can be removed
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import * as crypto from 'crypto';
 
 import { env } from "../../../env/server.mjs";
 import { prisma } from "../../../server/db";
@@ -44,15 +44,26 @@ export const authOptions: NextAuthOptions = {
           select: {
             id: true,
             email: true,
-            password: true,
+            passwordHash: true,
+            passwordSalt: true,
             firstname: true,
             lastname: true,
             phoneNumber: true,
           }
         });
+        if (!user) return null;
+        if (!user.passwordSalt || !user.passwordHash) return null;
 
-        if (user && user.password === password) {
-          return omit(user, 'password');
+        const passwordHash = crypto.pbkdf2Sync(
+          password,
+          user.passwordSalt as string,
+          1000,
+          64,
+        'sha512'
+        ).toString('hex');
+
+        if (user && user.passwordHash === passwordHash) {
+          return omit(user, 'passwordHash', 'passwordSalt');
         }
         // Return null if user data could not be retrieved
         return null;

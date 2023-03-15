@@ -1,7 +1,6 @@
 import logo from "../../../public/assets/logo.svg";
 import Image from "next/image";
-import { Box, FormControl, Input, Link, Text } from "@chakra-ui/react";
-import { Button } from "@chakra-ui/react";
+import { Box, FormControl, Input, Link, Text, Button } from "@chakra-ui/react";
 import Footer from "../../components/footer/footer";
 import type {ChangeEventHandler, FormEventHandler, MouseEventHandler} from "react";
 import { useCallback, useState} from "react";
