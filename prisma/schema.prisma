@@ -19,12 +19,12 @@ model Trip {
   driverId         String
   departureTime    DateTime
   // TODO: Add default value
-  departueLocation String
+  departureLocation String
   arrivalTime      DateTime
   arrivalLocation  String
   seats            Int
   price            Float
-  passangers       User[]   @relation("Passangers")
+  passengers       User[]   @relation("Passengers")
   driver           User     @relation(fields: [driverId], references: [id], onDelete: Cascade)
 }
 
@@ -65,5 +65,5 @@ model User {
   accounts         Account[]
   sessions         Session[]
   tripsAsDriver    Trip[]
-  tripsAsPassanger Trip[]    @relation("Passangers")
+  tripsAsPassenger Trip[]    @relation("Passengers")
 }
