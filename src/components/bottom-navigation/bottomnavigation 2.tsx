@@ -32,17 +32,17 @@ else if (router.pathname.startsWith('/profiles')){
   return (
     <Box className="flex h-full w-full flex-row justify-between bg-cyan-900">
       <Link as={NextLink} href="/trips" className="py-[2.156rem] pl-[4.313rem]">
-        <Icon as={currentSite === 'search-trip'? IoSearch:IoSearchOutline} color="white" boxSize={`1.5rem`} />
+        <Icon as={currentSite === 'search-trip'? IoSearchOutline:IoSearch} color="white" boxSize={`1.5rem`} />
       </Link>
       <Link as={NextLink} href="/trips/create" className="py-[2.156rem]">
-      <Icon as={currentSite === 'create-trip'? IoCar:IoCarOutline} color="white" boxSize={`1.5rem`} />
+      <Icon as={currentSite === 'create-trip'? IoCarOutline:IoCar} color="white" boxSize={`1.5rem`} />
       </Link>
       <Link
         as={NextLink}
         href="/profiles/me"
         className="py-[2.156rem] pr-[4.313rem]"
       >
-      <Icon as={currentSite === 'profiles'? IoPersonCircle:IoPersonCircleOutline} color="white" boxSize={`1.5rem`} />
+      <Icon as={currentSite === 'profiles'? IoPersonCircleOutline:IoPersonCircle} color="white" boxSize={`1.5rem`} />
       </Link>
     </Box>
   );

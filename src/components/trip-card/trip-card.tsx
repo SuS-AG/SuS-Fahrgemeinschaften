@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Card,
   CardHeader,
@@ -16,8 +16,18 @@ import { IoTimeOutline } from "react-icons/io5";
 import { IoCalendarOutline } from "react-icons/io5";
 import { MdAirlineSeatReclineExtra } from "react-icons/md";
 import NextLink from "next/link";
+import TripType from "../../types/tripType";
+import { format, formatDuration, intervalToDuration, sub } from "date-fns";
 
-function TripCard() {
+export interface TripCardProps {
+  trip: TripType;
+}
+
+const TripCard: React.FC<TripCardProps> = ({ trip }) => {
+  const requestLink = useMemo(() => {
+    return `/trips/${trip.id}`;
+  }, [trip]);
+
   return (
     <>
       <Box>
@@ -25,23 +35,48 @@ function TripCard() {
           <CardHeader>
             <Box className="flex items-center justify-start gap-2">
               <Avatar size="md" name="" src="" className="" />
-              <Heading size="md">Name Fahrer</Heading>
+              <Heading size="md">
+                {trip.driver.firstname} {trip.driver.lastname}
+              </Heading>
             </Box>
           </CardHeader>
           <CardBody>
             <Box className="flex justify-around">
               <Text>
-                Start place - Start Time <Icon as={IoChevronForward} />
-                Arrival place - Arrival Time
+                <>
+                  {trip.departureLocation} -{" "}
+                  {format(trip.departureTime, "HH:mm")}{" "}
+                </>
+              </Text>
+              <Icon as={IoChevronForward} />
+              <Text>
+                <>
+                  {trip.arrivalLocation} - {format(trip.arrivalTime, "HH:mm")}
+                </>
               </Text>
             </Box>
             <Box className="flex justify-between px-16">
-              <Text>
-                <Icon as={IoTimeOutline} /> 8:00
-              </Text>
-              <Text>
-                <Icon as={IoCalendarOutline} /> 01.01.1010
-              </Text>
+              <Box
+                className="flex items-center
+              "
+              >
+                <Icon as={IoTimeOutline} />
+                <Text>
+                  {formatDuration(
+                    intervalToDuration({
+                      start: trip.departureTime,
+                      end: trip.arrivalTime,
+                    }),
+                    {
+                      format: ["hours", "minutes"],
+                    }
+                  )}
+                </Text>
+              </Box>
+              <Box className="flex items-center">
+                <Icon as={IoCalendarOutline} />
+                <Text>{format(trip.departureTime, "dd.MM.yyyy")}</Text>
+              </Box>
             </Box>
             <Box className="flex px-16">
               <Text>
@@ -49,10 +84,8 @@ function TripCard() {
               </Text>
             </Box>
             <Box className="flex justify-end">
-              <Button colorScheme="teal">
-                <Link as={NextLink} href="/trips/id/">
-                  Anfragen
-                </Link>
+              <Button as={NextLink} href={requestLink} colorScheme="teal">
+                Anfragen
               </Button>
             </Box>
           </CardBody>
@@ -60,6 +93,6 @@ function TripCard() {
       </Box>
     </>
   );
-}
+};
 
 export default TripCard;
