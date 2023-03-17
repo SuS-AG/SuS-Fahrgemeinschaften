@@ -21,7 +21,7 @@ import { InvalidateQueryFilters } from "@tanstack/react-query";
 
 const Trip: NextPage = () => {
   const router = useRouter();
-  const tripID = useMemo(() => {
+  const tripId = useMemo(() => {
     return router.query.id;
   }, [router.query]);
 
@@ -31,14 +31,14 @@ const Trip: NextPage = () => {
       trpcCtx.invalidate(undefined, [
         "trip",
         "getById",
-        tripID,
+        tripId,
       ] as InvalidateQueryFilters);
     },
   });
 
   const { status: sessionStatus, data: userData } = useSession();
   const { isLoading, data } = api.trip.getById.useQuery({
-    id: tripID as string,
+    id: tripId as string,
   });
   const availableSeats = useMemo(() => {
     if (!data) return 0;
@@ -55,7 +55,7 @@ const Trip: NextPage = () => {
 
   const handleRequestButtonClick = () => {
     addPassengerToTripMutation.mutate({
-      tripId: tripID as string,
+      tripId: tripId as string,
       passengerId: userData?.user?.id!,
     });
   };
