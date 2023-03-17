@@ -17,7 +17,8 @@ export const profileRouter = createTRPCRouter({
   }),
 
   getById: protectedProcedure
-      .input(z.object({
+    .input(
+      z.object({
         id: z.string(),
       }))
       .query(async ({ctx, input}) => {
@@ -28,35 +29,24 @@ export const profileRouter = createTRPCRouter({
         });
       }),
 
-  completeProfile: protectedProcedure
-      .input(z.object({
-        firstname: z.string(), lastname: z.string(), phoneNumber: z.string(),
-      }))
-      .mutation(({input, ctx}) => {
-        protectedProcedure
-            .input(z.object({
-              id: z.string(),
-            }))
-            .query(async ({ctx, input}) => {
-              return await ctx.prisma.user.findUnique({
-                where: {id: input.id}, select: {
-                  id: true, email: true, firstname: true, lastname: true, phoneNumber: true,
-                },
-              });
-            });
-      }), editProfile: protectedProcedure
-      .input(z.object({
-        firstname: z.string(), lastname: z.string(), phonenumber: z.string(), email: z.string(),
-      }))
-      .mutation(({input, ctx}) => {
-        if (ctx.session?.user?.id) {
-          return ctx.prisma.user.update({
-            where: {
-              id: ctx.session.user.id,
-            }, data: {
-              firstname: input.firstname, lastname: input.lastname, phoneNumber: input.phonenumber, email: input.email,
-            },
-          });
-        }
-      }),
+    completeProfile: protectedProcedure
+    .input(
+      z.object({
+        firstname: z.string(),
+        lastname: z.string(),
+        phoneNumber: z.string(),
+      })
+    )
+    .mutation(({ input, ctx }) => {
+      if (ctx.session?.user?.id) {
+        return ctx.prisma.user.update({
+          where: { id: ctx.session.user.id },
+          data: {
+            firstname: input.firstname,
+            lastname: input.lastname,
+            phoneNumber: input.phoneNumber,
+          },
+        });
+      }
+    }),
 });
