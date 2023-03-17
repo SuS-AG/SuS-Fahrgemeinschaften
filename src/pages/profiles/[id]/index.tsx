@@ -20,7 +20,7 @@ const Profile: NextPage = () => {
   }, [id]);
 
   const cancelEditPageLink = useMemo(() => {
-    return `/profiles/${id}`;
+    return `/trips`;
   }, [id]);
 
   if (isLoading || !data) {
