@@ -18,8 +18,7 @@ model Trip {
   id               String   @id @default(cuid())
   driverId         String
   departureTime    DateTime
-  // TODO: Add default value
-  departueLocation String
+  departureLocation String
   arrivalTime      DateTime
   arrivalLocation  String
   seats            Int

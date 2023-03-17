@@ -118,8 +118,7 @@ const Edit: NextPage = ({}) => {
               colorScheme="teal"
               onClick={handleBackClick}
             >
-              {" "}
-              Abbrechen{" "}
+              Abbrechen
             </Button>
             <h1 className="font-bold">Profil bearbeiten</h1>
             <Button

@@ -1,7 +1,7 @@
 import {z} from "zod";
 import {userType} from "./userType";
 
-const tripType = z.object({
+export const tripType = z.object({
   id: z.string(),
   departureTime: z.date(),
   arrivalTime: z.date(),
