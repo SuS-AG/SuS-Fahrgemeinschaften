@@ -52,7 +52,18 @@ export const tripRouter = createTRPCRouter({
           })
       )
       .mutation(async ({ ctx, input }) => {
-        await ctx.prisma.trip.update({
+        const trip = await ctx.prisma.trip.findUnique({
+          where: { id: input.tripId },
+          select: {
+            passengers: true,
+            seats: true,
+          }
+        });
+        if (trip && trip.passengers.length + 1 > trip.seats) {
+          throw new Error('Trip is full');
+        }
+
+        return await ctx.prisma.trip.update({
           where: {
             id: input.tripId,
           },
