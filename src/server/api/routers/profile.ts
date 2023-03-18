@@ -8,7 +8,7 @@ export const profileRouter = createTRPCRouter({
         where: {
           id: ctx.session.user.id,
         }, select: {
-          id: true, email: true, firstname: true, lastname: true, phoneNumber: true,
+          id: true, email: true, firstname: true, lastname: true, phoneNumber: true,isNewUser: true
         },
       });
     }
@@ -44,6 +44,7 @@ export const profileRouter = createTRPCRouter({
             firstname: input.firstname,
             lastname: input.lastname,
             phoneNumber: input.phoneNumber,
+            isNewUser: false
           },
         });
       }),

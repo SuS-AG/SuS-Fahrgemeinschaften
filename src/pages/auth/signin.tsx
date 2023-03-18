@@ -3,11 +3,17 @@ import Image from "next/image";
 import {Box, FormControl, Input, Link, Text, Button} from "@chakra-ui/react";
 import Footer from "../../components/footer/footer";
 import type {ChangeEventHandler, FormEventHandler, MouseEventHandler} from "react";
-import { useCallback, useState} from "react";
-import {signIn} from "next-auth/react";
+import {useCallback, useEffect, useState} from "react";
+import {signIn, useSession} from "next-auth/react";
 import NextLink from "next/link";
+import {api} from "../../utils/api";
+import {useRouter} from 'next/router';
 
 export default function SignIn() {
+  const router = useRouter();
+  const meQuery = api.profile.me.useQuery(undefined, {
+    enabled: false
+  });
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
 
@@ -24,13 +30,18 @@ export default function SignIn() {
   const handleSubmit = useCallback<MouseEventHandler<HTMLButtonElement> & FormEventHandler<HTMLFormElement>>(async (e) => {
     e.preventDefault()
     if (!email || !password) return;
-    await signIn('credentials', {
+    const signInResponse = await signIn('credentials', {
       password,
       email,
-      redirect: true,
-      callbackUrl: '/'
-    })
-  }, [email, password])
+      redirect: false
+    });
+
+    if(signInResponse?.ok) {
+      await meQuery.refetch().then(async v => {
+        v.data?.isNewUser ? await router.push('/complete-profile') : await router.push('/')
+      }).catch(console.error);
+    }
+  }, [email, meQuery, password, router])
 
   return (
     <Box className="h-full w-full grid grid-rows-layout">
@@ -43,7 +54,7 @@ export default function SignIn() {
         />
       </Box>
       <Box className="justify-center text-center">
-        <Text className="text-4xl font-extrabold"> Login</Text>
+        <Text className="text-4xl font-extrabold">Login</Text>
       </Box>
 
       <Box className=" m-5 mx-auto  w-56 justify-center content-center">

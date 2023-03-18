@@ -68,4 +68,5 @@ model User {
   sessions         Session[]
   tripsAsDriver    Trip[]
   tripsAsPassenger Trip[]    @relation("Passengers")
+  isNewUser        Boolean   @default(true)
 }

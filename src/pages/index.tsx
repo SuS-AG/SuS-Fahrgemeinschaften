@@ -1,12 +1,12 @@
 "use client";
 import React from "react";
 import {type NextPage} from "next";
-import { useSession } from "next-auth/react";
+import {getSession, useSession} from "next-auth/react";
 import Link from "next/link";
+import type {GetServerSideProps} from "next";
 
 const Home: NextPage = () => {
   const session = useSession();
-
   return (
     <div>
       <h1>TESTING</h1>
@@ -21,5 +21,24 @@ const Home: NextPage = () => {
     </div>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context);
+  if (session?.user?.id) {
+    return {
+      redirect: {
+        statusCode: 302,
+        destination: '/trips',
+      }
+    }
+  } else {
+    return {
+      redirect: {
+        statusCode: 302,
+        destination: '/auth/signin',
+      }
+    }
+  }
+}
 
 export default Home;
