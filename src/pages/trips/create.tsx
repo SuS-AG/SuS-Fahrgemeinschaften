@@ -12,14 +12,15 @@ import {
   MdFmdGood,
   MdOutlineEuro
 } from "react-icons/md";
-import {add, format} from 'date-fns';
+import {format, parse} from 'date-fns';
 import BottomNavigation from "../../components/bottomNavigation/bottomNavigation";
 import {api} from "../../utils/api";
+import {de} from "date-fns/locale";
 
 const validateForm = (
     tripDate: Date | null,
-    tripStartTime: Date | null,
-    tripEndTime: Date | null,
+    tripStartTime: string,
+    tripEndTime: string | null,
     price: number | undefined,
     seats: number | undefined,
     meetingPlace: string | undefined,
@@ -38,8 +39,8 @@ const Create: NextPage = () => {
   const createTripMutation = api.trip.create.useMutation();
 
   const [tripDate, setTripDate] = useState<Date | null>(new Date(Date.now()));
-  const [tripStartTime, setTripStartTime] = useState<Date | null>(new Date(Date.now()));
-  const [tripEndTime, setTripEndTime] = useState<Date | null>(null);
+  const [tripStartTime, setTripStartTime] = useState<string>(format(new Date(Date.now()), 'HH:mm'));
+  const [tripEndTime, setTripEndTime] = useState<string | null>(null);
   const [price, setPrice] = useState<number>();
   const [seats, setSeats] = useState<number>();
   const [meetingPlace, setMeetingPlace] = useState<string>();
@@ -60,11 +61,11 @@ const Create: NextPage = () => {
   }, [setTripDate])
 
   const handleTripStartTimeChange = useCallback<ChangeEventHandler<HTMLInputElement>>((e) => {
-    setTripStartTime(e.currentTarget.valueAsDate);
+    setTripStartTime(e.currentTarget.value);
   }, [setTripStartTime])
 
   const handleTripEndTimeChange = useCallback<ChangeEventHandler<HTMLInputElement>>((e) => {
-    setTripEndTime(e.currentTarget.valueAsDate);
+    setTripEndTime(e.currentTarget.value);
   }, [setTripEndTime])
 
   const handlePriceChange = useCallback<ChangeEventHandler<HTMLInputElement>>((e) => {
@@ -87,10 +88,11 @@ const Create: NextPage = () => {
 
   const handleSubmitButtonClick = useCallback<MouseEventHandler<HTMLButtonElement>>(() => {
     if (!validateForm(tripDate, tripStartTime, tripEndTime, price, seats, meetingPlace, arrivalPlace)) return;
+
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- checked in validateForm
-    const departureDateTime = add(tripDate!, {hours: tripStartTime?.getHours() || 0, minutes: tripStartTime?.getMinutes() || 0});
+    const departureDateTime = parse(tripStartTime, 'HH:mm', tripDate!, {locale: de});
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- checked in validateForm
-    const arrivalDateTime = add(tripDate!, {hours: tripEndTime?.getHours() || 0, minutes: tripEndTime?.getMinutes() || 0});
+    const arrivalDateTime = parse(tripEndTime!, 'HH:mm', tripDate!, {locale: de});
 
     createTripMutation.mutate({
       departureTime: departureDateTime,
@@ -144,7 +146,7 @@ const Create: NextPage = () => {
                       type={'time'}
                       className={'max-w-[6.25rem]'}
                       placeholder={'7:00 Uhr'}
-                      value={tripStartTime ? format(tripStartTime, 'HH:mm') : undefined}
+                      value={tripStartTime}
                       onChange={handleTripStartTimeChange}
                   />
                 </Box>
@@ -155,7 +157,7 @@ const Create: NextPage = () => {
                       type={'time'}
                       className={'max-w-[6.25rem]'}
                       placeholder={'7:50 Uhr'}
-                      value={tripEndTime ? format(tripEndTime, 'HH:mm') : undefined}
+                      value={tripEndTime ?? undefined}
                       onChange={handleTripEndTimeChange}
                   />
                 </Box>
@@ -220,7 +222,7 @@ const Create: NextPage = () => {
         </Box>
         </Box>
         <Box>
-          <BottomNavigation />
+          <BottomNavigation/>
         </Box>
       </Box>
   )
