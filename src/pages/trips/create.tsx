@@ -13,7 +13,7 @@ import {
   MdOutlineEuro
 } from "react-icons/md";
 import {add, format} from 'date-fns';
-import BottomNavigation from "../../components/bottom-navigation/bottomnavigation";
+import BottomNavigation from "../../components/bottomNavigation/bottomnavigation";
 import {api} from "../../utils/api";
 
 const validateForm = (
@@ -105,10 +105,10 @@ const Create: NextPage = () => {
       arrivalLocation: arrivalPlace!,
     }, {
       onSuccess: () => {
-        router.push('/trips');
+        void router.push('/trips');
       }
     })
-  }, [arrivalPlace, createTripMutation, meetingPlace, price, seats, tripDate, tripEndTime, tripStartTime]);
+  }, [router, arrivalPlace, createTripMutation, meetingPlace, price, seats, tripDate, tripEndTime, tripStartTime]);
 
   return (
       <Box className={'grid grid-rows-layout h-full'}>

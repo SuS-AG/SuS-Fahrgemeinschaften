@@ -35,14 +35,15 @@ export default function Profile() {
     setPhoneNumber(event.target.value);
   };
 
-  const handleSubmit: MouseEventHandler<HTMLButtonElement> = () => {
+  const handleSubmit: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault();
     completeProfileMutation.mutate({ firstname, lastname, phoneNumber });
-    router.push("/trips");
+    void router.push("/trips");
   };
 
   return (
     <Box className="grid h-full w-full grid-rows-layout">
-      <form className="px-4 py-5">
+      <form className="px-4 py-5" onSubmit={e => e.preventDefault()}>
         <FormControl>
           <Box className="flex justify-end">
             <Button

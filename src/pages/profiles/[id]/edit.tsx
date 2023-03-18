@@ -1,38 +1,30 @@
-import React, {
-  ChangeEventHandler,
-  FormEventHandler,
-  HtmlHTMLAttributes,
-  MouseEventHandler,
-  useEffect,
-  useState,
-} from "react";
+import type {ChangeEventHandler, MouseEventHandler} from "react";
+import React, {useEffect, useState,} from "react";
 import {
+  Avatar,
   Box,
   Button,
   FormControl,
-  Spinner,
-  useDisclosure,
-} from "@chakra-ui/react";
-import { Avatar } from "@chakra-ui/react";
-import { Input } from "@chakra-ui/react";
-import { Link } from "@chakra-ui/react";
-import NextLink from "next/link";
-import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
-import { api } from "../../../utils/api";
-import { NextPage } from "next";
-import {
+  Input,
+  Link,
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Spinner,
+  useDisclosure
 } from "@chakra-ui/react";
-import Footer from "../../../components/footer/footer";
+import NextLink from "next/link";
+import {useRouter} from "next/router";
+import {useSession} from "next-auth/react";
+import {api} from "../../../utils/api";
+import type {NextPage} from "next";
+import BottomNavigation from "../../../components/bottomNavigation/bottomNavigation";
 
-const Edit: NextPage = ({}) => {
+const Edit: NextPage = () => {
   const [firstname, setFirstname] = useState<string>("");
   const [lastname, setLastname] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState<string>("");
@@ -40,9 +32,8 @@ const Edit: NextPage = ({}) => {
   const editProfileMutation = api.profile.editProfile.useMutation();
 
   const router = useRouter();
-  const { id } = router.query;
-  const { status: sessionStatus } = useSession();
-  const { isLoading, data } = api.profile.me.useQuery(undefined, {
+  const {status: sessionStatus} = useSession();
+  const {isLoading, data} = api.profile.me.useQuery(undefined, {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false,
@@ -56,15 +47,13 @@ const Edit: NextPage = ({}) => {
     setEmail(data?.email ?? "");
   }, [data, isLoading]);
 
-  useEffect(() => {}, [firstname]);
-
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {isOpen, onOpen, onClose} = useDisclosure();
 
   if (!data || isLoading) {
     return (
-      <Box className="flex h-screen w-[100%] items-center justify-center">
-        <Spinner color="teal.500" size="xl" />
-      </Box>
+        <Box className="flex h-screen w-[100%] items-center justify-center">
+          <Spinner color="teal.500" size="xl"/>
+        </Box>
     );
   }
 
@@ -86,112 +75,104 @@ const Edit: NextPage = ({}) => {
     setEmail(event.target.value);
   };
 
-  // const safeData: MouseEventHandler<HTMLButtonElement> = () => {
-  // };
-
   const handleBackClick: MouseEventHandler<HTMLButtonElement> = () => {
     router.back();
   };
 
-  const handleSubmit: MouseEventHandler<HTMLButtonElement> &
-    FormEventHandler<HTMLFormElement> = (event) => {
-    event.preventDefault();
-  };
-
   const handleModalSavebuttonClick: MouseEventHandler<
-    HTMLButtonElement
+      HTMLButtonElement
   > = () => {
     editProfileMutation.mutate({
       firstname, lastname, phonenumber: phoneNumber, email
     });
     onClose();
-    router.push({pathname: "/profiles/[id]", query: {id: data.id}} );
+    void router.push({pathname: "/profiles/[id]", query: {id: data.id}});
   };
 
   return (
-    <Box className="grid h-full w-full grid-rows-layout">
-      <form className="px-4 py-5">
-        <FormControl>
-          <Box className="flex flex-row items-center justify-between">
-            <Button
-              className="h-[2.5rem] w-[7.188rem]"
-              colorScheme="teal"
-              onClick={handleBackClick}
-            >
-              Abbrechen
-            </Button>
-            <h1 className="font-bold">Profil bearbeiten</h1>
-            <Button
-              className="h-[2.5rem] w-[7.188rem]"
-              colorScheme="teal"
-              onClick={onOpen}
-            >
-              Speichern
-            </Button>
-          </Box>
+      <Box className="grid h-full w-full grid-rows-layout">
+        <form className="px-4 py-5">
+          <FormControl>
+            <Box className="flex flex-row items-center justify-between">
+              <Button
+                  className="h-[2.5rem] w-[7.188rem]"
+                  colorScheme="teal"
+                  onClick={handleBackClick}
+              >
+                Abbrechen
+              </Button>
+              <h1 className="font-bold">Profil bearbeiten</h1>
+              <Button
+                  className="h-[2.5rem] w-[7.188rem]"
+                  colorScheme="teal"
+                  onClick={onOpen}
+              >
+                Speichern
+              </Button>
+            </Box>
 
-          <Modal isOpen={isOpen} onClose={onClose} isCentered>
-            <ModalOverlay />
-            <ModalContent maxW="80%">
-              <ModalHeader>Speichern?</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>Sollen die Änderungen übernommen werden?</ModalBody>
+            <Modal isOpen={isOpen} onClose={onClose} isCentered>
+              <ModalOverlay/>
+              <ModalContent maxW="80%">
+                <ModalHeader>Speichern?</ModalHeader>
+                <ModalCloseButton/>
+                <ModalBody>Sollen die Änderungen übernommen werden?</ModalBody>
 
-              <ModalFooter>
-                <Button colorScheme="gray" mr={3} onClick={onClose}>
-                  Verwerfen
-                </Button>
-                <Button colorScheme="green" onClick={handleModalSavebuttonClick}>
-                  Übernehmen
-                </Button>
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
+                <ModalFooter>
+                  <Button colorScheme="gray" mr={3} onClick={onClose}>
+                    Verwerfen
+                  </Button>
+                  <Button colorScheme="green" onClick={handleModalSavebuttonClick}>
+                    Übernehmen
+                  </Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
 
-          <Box className="mt-[3.563rem] mb-[2.875rem] flex flex-col text-center">
-            <Avatar size="2xl" name={fullname} src="" className="mx-auto" />
-            <Link
-              as={NextLink}
-              color="teal.500"
-              href="/complete-profile"
-              className="mt-4 no-underline"
-            >
-              Bild bearbeiten
-            </Link>
-          </Box>
+            <Box className="mt-[3.563rem] mb-[2.875rem] flex flex-col text-center">
+              <Avatar size="2xl" name={fullname} src="" className="mx-auto"/>
+              <Link
+                  as={NextLink}
+                  color="teal.500"
+                  href="/complete-profile"
+                  className="mt-4 no-underline"
+              >
+                Bild bearbeiten
+              </Link>
+            </Box>
 
-          <Box className="flex flex-col gap-5 ">
-            <Input
-              placeholder="Vorname"
-              value={firstname}
-              className="text-start "
-              onChange={handleFirstnameChange}
-            />
-            <Input
-              placeholder="Nachname"
-              value={lastname}
-              className="text-start"
-              onChange={handleLastnameChange}
-            />
-            <Input
-              placeholder="Telefonnummer"
-              value={phoneNumber}
-              className="text-start"
-              onChange={handlePhoneNumberChange}
-            />
-            <Input
-              placeholder="E-Mail"
-              value={email}
-              className="text-start "
-              onChange={handleEmailChange}
-            />
-          </Box>
-        </FormControl>
-      </form>
-      <Box>
-        <Footer />
+            <Box className="flex flex-col gap-5 ">
+              <Input
+                  placeholder="Vorname"
+                  value={firstname}
+                  className="text-start "
+                  onChange={handleFirstnameChange}
+              />
+              <Input
+                  placeholder="Nachname"
+                  value={lastname}
+                  className="text-start"
+                  onChange={handleLastnameChange}
+              />
+              <Input
+                  placeholder="Telefonnummer"
+                  value={phoneNumber}
+                  className="text-start"
+                  onChange={handlePhoneNumberChange}
+              />
+              <Input
+                  placeholder="E-Mail"
+                  value={email}
+                  className="text-start "
+                  onChange={handleEmailChange}
+              />
+            </Box>
+          </FormControl>
+        </form>
+        <Box>
+          <BottomNavigation/>
+        </Box>
       </Box>
-    </Box>
   );
 };
 

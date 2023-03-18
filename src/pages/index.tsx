@@ -1,34 +1,25 @@
 "use client";
-import {type NextPage} from "next";
-import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/react";
 import React from "react";
-import {api} from "../utils/api";
-import TripCard from "../components/trip-card/trip-card";
+import {type NextPage} from "next";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 const Home: NextPage = () => {
-  return (
-    <>
-        <TripCard/>
+  const session = useSession();
 
-    </>
+  return (
+    <div>
+      <h1>TESTING</h1>
+      <p>User State: {session.status}</p>
+      <p>User ID: {session.data?.user?.id}</p>
+      <p>User E-Mail: {session.data?.user?.email}</p>
+
+      <div className={'flex justify-around'}>
+        <Link href={'/auth/signin'}>Sign In</Link>
+        <Link href={'/register'}>Register</Link>
+      </div>
+    </div>
   );
 };
 
 export default Home;
-
-const AuthShowcase: React.FC = () => {
-  const { data: sessionData } = useSession();
-
-  const { data: me } = api.profile.me.useQuery(
-    undefined, // no input
-    { enabled: sessionData?.user !== undefined },
-  );
-
-  return (
-    <div className="flex flex-col items-center justify-center gap-4">
-  
-      <TripCard/>
-    </div>
-  );
-};

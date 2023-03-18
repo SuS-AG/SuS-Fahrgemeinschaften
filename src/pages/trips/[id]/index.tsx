@@ -16,7 +16,7 @@ import { api } from "../../../utils/api";
 import { type NextPage } from "next";
 import format from "date-fns/format";
 import { de } from "date-fns/locale";
-import BottomNavigation from "../../../components/bottom-navigation/bottomnavigation";
+import BottomNavigation from "../../../components/bottomNavigation/bottomnavigation";
 import { InvalidateQueryFilters } from "@tanstack/react-query";
 
 const Trip: NextPage = () => {
@@ -28,7 +28,7 @@ const Trip: NextPage = () => {
   const trpcCtx = api.useContext();
   const addPassengerToTripMutation = api.trip.addPassengerToTrip.useMutation({
     onSuccess: async () => {
-      trpcCtx.invalidate(undefined, [
+      await trpcCtx.invalidate(undefined, [
         "trip",
         "getById",
         tripId,

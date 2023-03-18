@@ -17,8 +17,7 @@ export const profileRouter = createTRPCRouter({
   }),
 
   getById: protectedProcedure
-    .input(
-      z.object({
+      .input(z.object({
         id: z.string(),
       }))
       .query(async ({ctx, input}) => {
@@ -29,24 +28,40 @@ export const profileRouter = createTRPCRouter({
         });
       }),
 
-    completeProfile: protectedProcedure
-    .input(
-      z.object({
-        firstname: z.string(),
-        lastname: z.string(),
-        phoneNumber: z.string(),
-      })
-    )
-    .mutation(({ input, ctx }) => {
-      if (ctx.session?.user?.id) {
+  completeProfile: protectedProcedure
+      .input(z.object({
+        firstname: z.string(), lastname: z.string(), phoneNumber: z.string(),
+      }))
+      .mutation(({input, ctx}) => {
+        if (!ctx.session?.user?.id) throw new Error('Not logged in');
+        const id = ctx.session.user.id;
+        console.log('id', id);
+        console.log('input', input);
+
         return ctx.prisma.user.update({
-          where: { id: ctx.session.user.id },
+          where: { id },
           data: {
             firstname: input.firstname,
             lastname: input.lastname,
             phoneNumber: input.phoneNumber,
           },
         });
-      }
-    }),
+      }),
+
+  editProfile: protectedProcedure
+      .input(z.object({
+        firstname: z.string(), lastname: z.string(), phonenumber: z.string(), email: z.string(),
+      }))
+      .mutation(({input, ctx}) => {
+        if (!ctx.session?.user?.id) throw new Error('Not logged in');
+
+        return ctx.prisma.user.update({
+          where: {
+            id: ctx.session.user.id,
+          }, data: {
+            firstname: input.firstname, lastname: input.lastname, phoneNumber: input.phonenumber, email: input.email,
+          },
+        });
+      }),
+
 });

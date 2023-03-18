@@ -2,6 +2,23 @@ import { z } from "zod";
 import {createTRPCRouter, protectedProcedure} from "../trpc";
 
 export const tripRouter = createTRPCRouter({
+  getAllTrips: protectedProcedure
+      .query(async ({ctx}) => {
+        return await ctx.prisma.trip.findMany({
+          select: {
+            id: true,
+            departureTime: true,
+            departureLocation: true,
+            arrivalTime: true,
+            arrivalLocation: true,
+            seats: true,
+            price: true,
+            passengers: true,
+            driver: true
+          }
+        })
+      }),
+
   getById: protectedProcedure
       .input(
           z.object({
@@ -20,6 +37,7 @@ export const tripRouter = createTRPCRouter({
             seats: true,
             price: true,
             passengers: true,
+            driver: true
           },
         });
 

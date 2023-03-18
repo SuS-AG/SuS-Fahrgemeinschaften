@@ -1,26 +1,23 @@
 import logo from "../../../public/assets/logo.svg";
 import Image from "next/image";
-import { Box, FormControl, Input, Link, Text } from "@chakra-ui/react";
-import { Button } from "@chakra-ui/react";
+import {Box, FormControl, Input, Link, Text, Button} from "@chakra-ui/react";
 import Footer from "../../components/footer/footer";
 import type {ChangeEventHandler, FormEventHandler, MouseEventHandler} from "react";
 import { useCallback, useState} from "react";
 import {signIn} from "next-auth/react";
 import NextLink from "next/link";
 
-export default function Signin() {
+export default function SignIn() {
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
 
   const handleEmailChange = useCallback<ChangeEventHandler<HTMLInputElement>>((e) => {
-    const value = e.target.value;
-    if (value === undefined) return;
+    const value = e.currentTarget.value;
     setEmail(value);
   }, [setEmail]);
 
   const handlePasswordChange = useCallback<ChangeEventHandler<HTMLInputElement>>((e) => {
-    const value = e.target.value;
-    if (value === undefined) return;
+    const value = e.currentTarget.value;
     setPassword(value);
   }, [setPassword]);
 
