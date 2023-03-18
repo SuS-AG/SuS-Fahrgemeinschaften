@@ -1,6 +1,6 @@
 import {Box} from "@chakra-ui/react";
 import TripCard from "../../components/tripCard/tripCard";
-import BottomNavigation from "../../components/bottomNavigation/bottomnavigation";
+import BottomNavigation from "../../components/bottomNavigation/bottomNavigation";
 import React from "react";
 import {api} from "../../utils/api";
 import type {NextPage} from "next";

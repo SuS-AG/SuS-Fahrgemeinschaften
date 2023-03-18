@@ -13,7 +13,7 @@ import {
   MdOutlineEuro
 } from "react-icons/md";
 import {add, format} from 'date-fns';
-import BottomNavigation from "../../components/bottomNavigation/bottomnavigation";
+import BottomNavigation from "../../components/bottomNavigation/bottomNavigation";
 import {api} from "../../utils/api";
 
 const validateForm = (
