@@ -54,12 +54,13 @@ const Trip: NextPage = () => {
   const handleRequestButtonClick = () => {
     addPassengerToTripMutation.mutate({
       tripId: tripId as string,
-      passengerId: userData?.user?.id!,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- can be ignored, since the userData must be there
+      passengerId: userData!.user!.id,
     });
   };
 
   const handleBackButtonClick = () => {
-    router.push("/trips");
+    void router.push("/trips");
   };
 
   return (

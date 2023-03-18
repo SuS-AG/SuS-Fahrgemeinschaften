@@ -126,3 +126,5 @@ const Register: NextPage = () => {
     </Box>
   </Box>);
 }
+
+export default Register;
