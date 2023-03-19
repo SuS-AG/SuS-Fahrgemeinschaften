@@ -11,7 +11,7 @@ import { tripRouter } from "./routers/trip";
 export const appRouter = createTRPCRouter({
   register: registerRouter,
   profile: profileRouter,
-  trip: tripRouter,
+  trip: tripRouter
 });
 
 // export type definition of API

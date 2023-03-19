@@ -1,45 +1,52 @@
-/* eslint-disable react/no-children-prop */
-import { SearchIcon } from "@chakra-ui/icons";
-import { Box, Input, InputGroup, InputLeftAddon, Icon } from "@chakra-ui/react";
-import TripCard from "../../components/trip-card/trip-card";
-import BottomNavigation from "../../components/bottom-navigation/bottomnavigation";
+import {Box} from "@chakra-ui/react";
+import TripCard from "../../components/tripCard/tripCard";
+import BottomNavigation from "../../components/bottomNavigation/bottomNavigation";
 import React from "react";
-import { sub } from "date-fns";
+import {api} from "../../utils/api";
+import type {NextPage} from "next";
 
-function search() {
+const Search: NextPage = () => {
+  const {
+    isLoading: tripsLoading,
+    isError: tripsError,
+    data: tripsData
+  } = api.trip.getAllTrips.useQuery();
+
+  if (tripsLoading) {
+    return <div>
+      Loading...
+    </div>
+  }
+
+  if (tripsError || !tripsData) {
+    return <div>
+      There was an Error while loading the Trips.
+    </div>
+  }
+
   return (
-    <Box className="grid h-full grid-rows-layout">
-      <Box className="h-full overflow-scroll">
-        <Box className="m-5">
-          <Box className="flex flex-col gap-3">
-            <TripCard
-              trip={{
-                id: "1",
-                departureTime: sub(new Date(), { hours: 10 }),
-                arrivalTime: new Date(),
-                departureLocation: "Haps",
-                arrivalLocation: "Evian",
-                price: 80,
-                seats: 3,
-                driver: {
-                  firstname: "Max",
-                  lastname: "Susmann",
-                  phoneNumber: "015786769652",
-                  id: "88",
-                  email: "lakatos.p@gmx.de",
-                },
-                passengers: [],
-              }}
-            />
+      <Box className="grid h-full grid-rows-layout">
+        <Box className="h-full overflow-scroll">
+          <Box className="m-5">
+            <Box className="flex flex-col gap-3">
+              {
+                tripsData?.map((trip) => {
+                  return (
+                      <TripCard
+                          key={trip.id}
+                          trip={trip}
+                      />
+                  )
+                })
+              }
+            </Box>
           </Box>
         </Box>
+        <Box>
+          <BottomNavigation/>
+        </Box>
       </Box>
-
-      <Box>
-        <BottomNavigation />
-      </Box>
-    </Box>
   );
 }
 
-export default search;
+export default Search;
