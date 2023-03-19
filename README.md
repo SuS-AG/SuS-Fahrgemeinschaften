@@ -1,28 +1,32 @@
-# Create T3 App
+# Schülerinnen und Schüler Fahrgemeinschaften der SuS-AG
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+## Wie kann das Projekt gestartet werden?
 
-## What's next? How do I make an app with this?
+### Voraussetzungen
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+- [Node.js](https://nodejs.org/en/) (Version 18.12.1)
+- [Yarn](https://yarnpkg.com/) (Version 1.22.19)
+- [SQLite](https://www.prisma.io/dataguide/sqlite/setting-up-a-local-sqlite-database#setting-up-sqlite-on-windows)
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+### Starten
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+1. `yarn install` ausführen um die Abhängigkeiten zu installieren.
+2. Eine Datei namens `.env` im Projektverzeichnis anlegen und folgende Inhalte hinzufügen:
+    ```dotenv
+    # When adding additional env variables, the schema in /env/schema.mjs should be updated accordingly
+    # Prisma
+    DATABASE_URL=file:./db.sqlite
 
-## Learn More
-
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
-
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
-
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+    # Next Auth
+    # You can generate the secret via 'openssl rand -base64 32' on Linux
+    # More info: https://next-auth.js.org/configuration/options#secret
+    NEXTAUTH_SECRET='<insert the secret generated as stated above here>'
+    NEXTAUTH_URL=http://localhost:3000
+    ```
+3. Anpassen der `prisma.schema` Datei im Projektverzeichnis.
+   1. Entfernen der Zeile 6 (`previewFeatures = ["ReferentialIntegrity"]`).
+   2. Ändern der Zeile 10 (`provider = "mysql"` => `provider = "sqlite"`).
+   3. Entfernen der Zeile 16 (`relationMode = "prisma"`).
+   4. Jedes `@db.Text` auskommentieren.
+4. `yarn prisma db push` ausführen um die Datenbank zu erstellen.
+5. `yarn dev` ausführen um das Projekt zu starten.
