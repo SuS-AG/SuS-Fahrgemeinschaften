@@ -20,17 +20,17 @@ const BottomNavigation: React.FC = () => {
   }, [router.pathname]);
 
   return (
-      <Box className="flex h-full w-full flex-row justify-between bg-cyan-900">
-        <Link as={NextLink} href="/trips" className="py-[2.156rem] pl-[4.313rem]">
+      <Box className="grid grid-cols-3 h-[5.875rem] w-full bg-cyan-900 place-content-stretch justify-items-stretch">
+        <Link as={NextLink} href="/trips" className="flex justify-center items-center">
           <Icon as={currentSite === 'search-trip' ? IoSearch : IoSearchOutline} color="white" boxSize={`1.5rem`}/>
         </Link>
-        <Link as={NextLink} href="/trips/create" className="py-[2.156rem]">
+        <Link as={NextLink} href="/trips/create" className="flex justify-center items-center">
           <Icon as={currentSite === 'create-trip' ? IoCar : IoCarOutline} color="white" boxSize={`1.5rem`}/>
         </Link>
         <Link
             as={NextLink}
             href="/profiles/me"
-            className="py-[2.156rem] pr-[4.313rem]"
+            className="flex justify-center items-center"
         >
           <Icon as={currentSite === 'profiles' ? IoPersonCircle : IoPersonCircleOutline} color="white"
                 boxSize={`1.5rem`}/>
