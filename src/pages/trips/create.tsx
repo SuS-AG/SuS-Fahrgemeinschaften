@@ -114,8 +114,8 @@ const Create: NextPage = () => {
 
   return (
       <Box className={'grid grid-rows-layout h-full'}>
-        <Box className={'px-4 py-5'}>
-          <Box className="grid grid-cols-[repeat(3,33%)] items-center justify-between">
+        <Box className={'px-4 py-5 flex flex-col h-full'}>
+          <Box className="flex justify-between items-center">
             <Button
                 className="h-[2.5rem] w-[7.188rem] font-semibold "
                 colorScheme="teal"
@@ -125,6 +125,13 @@ const Create: NextPage = () => {
               Zurück
             </Button>
             <h1 className="text-center font-bold">Fahrt</h1>
+            <Button
+                className={'w-[7.188rem] '}
+                onClick={handleSubmitButtonClick}
+                colorScheme={'green'}
+            >
+              Erstellen
+            </Button>
           </Box> <Box className={'p-5'}>
           <form onSubmit={handleFormSubmit} className={'flex gap-6 flex-col'}>
             <Box className={'flex flex-col items-center gap-1'}>
@@ -144,7 +151,7 @@ const Create: NextPage = () => {
                   <Text>Hinfahrt</Text>
                   <Input
                       type={'time'}
-                      className={'max-w-[6.25rem]'}
+                      className={'max-w-[7.25rem]'}
                       placeholder={'7:00 Uhr'}
                       value={tripStartTime}
                       onChange={handleTripStartTimeChange}
@@ -155,7 +162,7 @@ const Create: NextPage = () => {
                   <Text>Ankunft ca.</Text>
                   <Input
                       type={'time'}
-                      className={'max-w-[6.25rem]'}
+                      className={'max-w-[7.25rem]'}
                       placeholder={'7:50 Uhr'}
                       value={tripEndTime ?? undefined}
                       onChange={handleTripEndTimeChange}
@@ -172,7 +179,7 @@ const Create: NextPage = () => {
                     </InputLeftElement>
                     <Input
                         type={'number'}
-                        className={'max-w-[6.25rem]'}
+                        className={'max-w-[7.25rem]'}
                         placeholder={'4.00'}
                         value={price}
                         onChange={handlePriceChange}
@@ -184,7 +191,7 @@ const Create: NextPage = () => {
                   <Text>Sitzplätze</Text>
                   <Input
                       type={'number'}
-                      className={'max-w-[6.25rem]'}
+                      className={'max-w-[7.25rem]'}
                       placeholder={'3'}
                       value={seats}
                       onChange={handleSeatsChange}
@@ -212,12 +219,6 @@ const Create: NextPage = () => {
                   onChange={handleArrivalPlaceChange}
               />
             </Box>
-            <Button
-                onClick={handleSubmitButtonClick}
-                colorScheme={'green'}
-            >
-              Erstellen
-            </Button>
           </form>
         </Box>
         </Box>

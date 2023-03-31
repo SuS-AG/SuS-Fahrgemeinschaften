@@ -65,8 +65,8 @@ const Trip: NextPage = () => {
 
   return (
       <Box className="grid h-full w-full grid-rows-layout">
-        <Box className="px-4 py-5">
-          <Box className="mb-[6rem] grid grid-cols-[repeat(3,33%)] items-center justify-between">
+        <Box className="px-4 py-5 flex flex-col gap-6">
+          <Box className="grid grid-cols-[repeat(3,33%)] items-center justify-between">
             <Button
                 className="h-[2.5rem] w-[7.188rem] font-semibold "
                 colorScheme="teal"
@@ -146,7 +146,7 @@ const Trip: NextPage = () => {
                   {data.departureLocation}
                 </Box>
               </Box>
-              <Box className="mb-[5rem] flex flex-col items-center justify-center">
+              <Box className="mb-6 flex flex-col items-center justify-center">
                 <Box>
                   <Icon as={MdFmdGood} className="text-[1.5rem]"></Icon>
                 </Box>
