@@ -1,13 +1,14 @@
 import logo from "../../public/assets/logo.svg";
 import Image from "next/image";
-import {Box, Button, FormControl, Input, Link, Text} from "@chakra-ui/react";
+import {Box, Button, FormControl, Icon, Input, Link, Text, Tooltip} from "@chakra-ui/react";
 import Footer from "../components/footer/footer";
 import type {ChangeEventHandler, FormEventHandler, MouseEventHandler} from "react";
-import {useCallback, useState} from "react";
+import React, {useCallback, useState} from "react";
 import NextLink from "next/link";
 import {api} from "../utils/api";
 import {useRouter} from "next/router";
 import type {NextPage} from "next";
+import {IoHelpCircleOutline} from "react-icons/io5";
 
 const Register: NextPage = () => {
   const {
@@ -31,8 +32,7 @@ const Register: NextPage = () => {
     if (value === undefined) return;
     setPassword(value);
   }, [setPassword]);
-
-  const handlePasswordRepeatChange = useCallback<ChangeEventHandler<HTMLInputElement>>((e) => {
+const handlePasswordRepeatChange = useCallback<ChangeEventHandler<HTMLInputElement>>((e) => {
     const value = e.currentTarget.value;
     if (value === undefined) return;
     setPasswordRepeat(value);
@@ -87,12 +87,18 @@ const Register: NextPage = () => {
                 className="my-2"
                 onChange={handleEmailChange}
             />
-            <Input
-                type="password"
-                placeholder="Passwort"
-                className="my-2"
-                onChange={handlePasswordChange}
-            />
+            <Tooltip
+                hasArrow
+                label='Das Passwort muss min. 8 Zeichen lang sein und  muss min. eine Zahl enthalten, Sonderzeichen sind nicht erlaubt!'
+                bg='gray.600'
+            >
+              <Input
+                  type="password"
+                  placeholder="Passwort"
+                  className="my-2"
+                  onChange={handlePasswordChange}
+              />
+            </Tooltip>
             <Input
                 type="password"
                 placeholder="Passwort wiederholen"
@@ -118,7 +124,8 @@ const Register: NextPage = () => {
             hier{" "}
           </Link>
           an.
-        </Text></Box>
+        </Text>
+      </Box>
     </Box>
 
     <Box>
