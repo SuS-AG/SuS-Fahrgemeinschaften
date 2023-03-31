@@ -63,7 +63,7 @@ export default function Profile() {
               <Link
                   as={NextLink}
                   color="teal.500"
-                  href="/complete-profile"
+                  href="#"
                   className="mt-4 no-underline"
               >
                 Bild bearbeiten
